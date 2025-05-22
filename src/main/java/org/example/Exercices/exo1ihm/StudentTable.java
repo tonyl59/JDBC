@@ -5,20 +5,20 @@ import java.util.Scanner;
 
 
 public class StudentTable {
+    static Scanner scanner = new Scanner(System.in);
 
 
     public static void add_student(Connection connection) throws SQLException {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Merci de saisir le prénom : ");
+        System.out.println("Please input first name: ");
         String firstName = scanner.nextLine();
 
-        System.out.println("Merci de saisir le nom : ");
+        System.out.println("Please input last name: ");
         String lastName = scanner.nextLine();
 
-        System.out.println("Merci de saisir son numéro de classe : ");
+        System.out.println("Please input student's class number : ");
         int classe = scanner.nextInt();
         scanner.nextLine(); // Utiilsation du retour chariot parce que le nextInt ne le fait
-        System.out.println("Merci de saisir la date de diplôme (Au format JJ-MM-AAAA, préférablement)");
+        System.out.println("Please input student's diploma date (DD-MM-YYYY format preferably)");
         String date = scanner.nextLine();
 
 
@@ -30,9 +30,9 @@ public class StudentTable {
         preparedStatement.setString(4, date);
         int nbrRows = preparedStatement.executeUpdate(); // retour int qui correspond au nombre de lignes affectés
         ResultSet resultSet = preparedStatement.getGeneratedKeys(); //
-        System.out.println("Nombre de ligne : " + nbrRows);
+        System.out.println("Number of lines: " + nbrRows);
         if (resultSet.next()) {
-            System.out.println("Id de la ligne insérée : " + resultSet.getInt(1));
+            System.out.println("ID of inserted line : " + resultSet.getInt(1));
         }
     }
 
@@ -40,23 +40,52 @@ public class StudentTable {
 
         String request = "SELECT * FROM etudiant";
         PreparedStatement statement = connection.prepareStatement(request);
-        statement.setInt(1, 2);
         ResultSet resultSet = statement.executeQuery();
-        if (resultSet.next()) {
-            System.out.println("La personne avec l'id numero 2 : ");
-            System.out.println("Son nom " + resultSet.getString("first_name"));
-            System.out.println("Son prenom " + resultSet.getString("last_name"));
+        while (resultSet.next()) {
+            System.out.print("[id: " + resultSet.getString("id"));
+            System.out.print("] prenom: " + resultSet.getString("first_name"));
+            System.out.print(" | nom: " + resultSet.getString("last_name"));
+            System.out.print(" | class n°: " + resultSet.getString("classe"));
+            System.out.print(" | diploma date: " + resultSet.getString("date"));
             System.out.println();
-            ;
         }
-    /*
-    public static void display_in_class(Connection connection) throws SQLException{
+    }
         ;
+
+
+    public static void display_in_class(Connection connection) throws SQLException {
+        String request = "SELECT * FROM etudiant WHERE classe = ?";
+        PreparedStatement statement = connection.prepareStatement(request);
+
+        System.out.println("Veuillez saisir le numéro de classe que vous voulez voir");
+        int class_nbr = scanner.nextInt();
+        statement.setInt(1, class_nbr);
+        ResultSet resultSet = statement.executeQuery();
+        System.out.println("Voici les étudiants de la classe n°"+class_nbr);
+        while (resultSet.next()) {
+            System.out.print("[id: " + resultSet.getString("id"));
+            System.out.print("] prenom: " + resultSet.getString("first_name"));
+            System.out.print(" | nom: " + resultSet.getString("last_name"));
+            System.out.print(" | n° classe: " + resultSet.getString("classe"));
+            System.out.print(" | date de diplôme: " + resultSet.getString("date"));
+            System.out.println();
+        }
     }
 
-    public static void remove_student(Connection connection)throws SQLException{{
-    ;}
+
+    public static void remove_student(Connection connection)throws SQLException{
+        String request = "DELETE FROM etudiant WHERE id = ?";
+        PreparedStatement statement = connection.prepareStatement(request);
+
+        System.out.println("Input the ID of the student you want to remove");
+        int id = scanner.nextInt();
+        statement.setInt(1, id);
+        int resultSet = statement.executeUpdate();
+        if (resultSet > 0) {
+            System.out.println("Student with id n°"+id+" has been removed");
         }
-    } */
     }
 }
+
+
+

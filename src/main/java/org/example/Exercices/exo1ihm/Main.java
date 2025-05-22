@@ -9,12 +9,11 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         IHM ihm = new IHM();
-        Scanner scanner = new Scanner(System.in);
         Connection connection = null;
         try {
             connection = ConnectionUtilsEXO1old.getSQLConnection();
             if (connection != null) {
-                System.out.println("On vient de se connecter à la BDD!!!");
+                System.out.println("We're now connected to the database !");
                 ihm.start(connection);
             }
 
