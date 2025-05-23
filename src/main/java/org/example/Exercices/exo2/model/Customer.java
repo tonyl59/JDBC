@@ -4,17 +4,22 @@ public class Customer {
 
     // Attributes
     private int id;
-    private int customer_id;
+    private String lastName;
+    private String firstName;
+    private String phone;
 
-    // Constructor
-
-    public Customer(int id, int customer_id) {
+    // Constructors
+    public Customer(int id, String lastName, String firstName, String phone) {
         this.id = id;
-        this.customer_id = customer_id;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.phone = phone;
     }
 
-    public Customer(int customer_id) {
-        this.customer_id = customer_id;
+    public Customer(String lastName, String firstName, String phone) {
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.phone = phone;
     }
 
     // Setters & Getters
@@ -27,11 +32,39 @@ public class Customer {
         this.id = id;
     }
 
-    public int getCustomer_id() {
-        return customer_id;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setCustomer_id(int customer_id) {
-        this.customer_id = customer_id;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    // Methods
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
     }
 }

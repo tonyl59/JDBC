@@ -7,6 +7,7 @@ public class Operation {
     private double amount;
     private String status;
 
+
     // Constructor
 
     public Operation(int id, double amount, String status) {

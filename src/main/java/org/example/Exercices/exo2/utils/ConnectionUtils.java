@@ -4,14 +4,17 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class ConnectionUtils {
-    public static Connection getSQLConnection() throws SQLException {
-        // preparation pour se connecter à la bdd
-        String url = "jdbc:mysql://localhost:3306/jdbc_exo2";
-        String username = "root";
-        String password = "tony"; // Changer le mdp
+// C'est ici qu'on doit gérer l'authentification
 
-        Connection connection = DriverManager.getConnection(url,username,password);
-        return connection;
+public class ConnectionUtils {
+    private final String url = "jdbc:mysql://localhost:3306/jdbc_exo2";
+    private final String user = "root";
+    private final String password = "tony"; //
+
+
+    public Connection getSQLConnection() throws SQLException {
+        return DriverManager.getConnection(url,user,password);
+        // preparation pour se connecter à la bdd
+
     }
 }
