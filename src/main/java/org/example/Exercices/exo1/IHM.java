@@ -1,4 +1,4 @@
-package org.example.Exercices.exo1ihm;
+package org.example.Exercices.exo1;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -13,7 +13,7 @@ public class IHM {
 
     public void start(Connection connection) throws SQLException {
         System.out.println("What do you want to do to the student database ?)");
-        int choix = 0;
+        int choix = 0; // à la place je peux faire un do while qui me permet de mettre le while à la fin, et comme ça je n'ai pas à initialiser le choix ici mais juste au debut de la boucle
         while (choix!=5){
             System.out.println("""
         - 1) Add a student

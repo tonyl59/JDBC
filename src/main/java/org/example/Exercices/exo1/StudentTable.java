@@ -1,4 +1,4 @@
-package org.example.Exercices.exo1ihm;
+package org.example.Exercices.exo1;
 
 import java.sql.*;
 import java.util.Scanner;
@@ -57,11 +57,11 @@ public class StudentTable {
         String request = "SELECT * FROM etudiant WHERE classe = ?";
         PreparedStatement statement = connection.prepareStatement(request);
 
-        System.out.println("Veuillez saisir le numéro de classe que vous voulez voir");
+        System.out.println("Please input the class number that you want to see");
         int class_nbr = scanner.nextInt();
         statement.setInt(1, class_nbr);
         ResultSet resultSet = statement.executeQuery();
-        System.out.println("Voici les étudiants de la classe n°"+class_nbr);
+        System.out.println("Here's all students from class n°"+class_nbr);
         while (resultSet.next()) {
             System.out.print("[id: " + resultSet.getString("id"));
             System.out.print("] prenom: " + resultSet.getString("first_name"));
@@ -79,10 +79,27 @@ public class StudentTable {
 
         System.out.println("Input the ID of the student you want to remove");
         int id = scanner.nextInt();
-        statement.setInt(1, id);
-        int resultSet = statement.executeUpdate();
-        if (resultSet > 0) {
-            System.out.println("Student with id n°"+id+" has been removed");
+
+        // voir pour rajouter un check sur l'id
+
+        // Peut être dans une methode getbyid
+        String requestID = "SELECT * FROM etudiant where id = ?";
+        PreparedStatement statementID = connection.prepareStatement(requestID);
+        statementID.setInt(1,id);
+        ResultSet resultSetID = statementID.executeQuery();
+        int id_check = -1;
+        if(resultSetID.next()){
+            id_check = resultSetID.getInt("id");
+        // pourrait se finir avec un return id_check si c'est une fonction
+        } // fin de la methode get by id
+        if (id_check == id){
+            statement.setInt(1, id);
+            int resultSet = statement.executeUpdate();
+            if (resultSet > 0) {
+            System.out.println("Student with id n°" + id + " has been removed");
+            }
+        }else{
+            System.out.println("No student with this id number !");
         }
     }
 }
