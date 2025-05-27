@@ -25,8 +25,8 @@ public class CustomerDao extends BaseDao<Customer>{
             customer.setId(resultSet.getInt(1));
             System.out.println(rowNb+" line added for customer");
 
-            Account account = new Account(customer.getId(), customer);
-            request = "INSERT INTO acc (customer_id) values (?)";
+            Account account = new Account(customer.getId() );
+            request = "INSERT INTO acc (customer_id, amount) values (?, 0)";
             statement = connection.prepareStatement(request, Statement.RETURN_GENERATED_KEYS);
             statement.setInt(1,customer.getId());
 
@@ -42,24 +42,38 @@ public class CustomerDao extends BaseDao<Customer>{
     }
 
     @Override
-    public boolean deposit(Customer customer) throws SQLException {
+    public boolean deposit(Account account, double add_amount) throws SQLException {
         return false;
     }
 
+
     @Override
-    public boolean withdraw(Customer customer) throws SQLException {
+    public boolean withdraw(Account account, double remove_amount) throws SQLException {
         return false;
     }
+
 
     @Override
     public Customer get(int id) throws SQLException {
-        return null;
+        Customer customer = null;
+        request = "SELECT * FROM customer where id = ?";
+        statement = connection.prepareStatement(request);
+        statement.setInt(1,id);
+        resultSet = statement.executeQuery();
+        if (resultSet.next()){
+            customer = new Customer(resultSet.getInt("id"),
+                    resultSet.getString("last_name"),
+                    resultSet.getString("first_name"),
+                    resultSet.getString("phone"));
+        }
+        return customer;
     }
 
     @Override
-    public List<Customer> get() throws SQLException {
+    public List<Customer> get_list(int id) throws SQLException {
         return List.of();
     }
+
 }
 
 

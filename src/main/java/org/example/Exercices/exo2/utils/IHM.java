@@ -1,12 +1,12 @@
 package org.example.Exercices.exo2.utils;
 
+import org.example.Exercices.exo2.model.Account;
 import org.example.Exercices.exo2.model.Customer;
+import org.example.Exercices.exo2.model.Operation;
 import org.example.Exercices.exo2.service.Bank;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 // Va faire tout les prints et partie utilisateur....
@@ -54,31 +54,82 @@ public class IHM {
     }
 
     private static void depositAction() throws SQLException{ //TODO Deposit, withdraw & display pas encore pret, il faut aussi faire l'operationDao
+        System.out.println("On which customer's account ID do you want to deposit ? ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+        Account account = bank.getAccount(id);
+        if (account == null){
+            System.out.println("Account ID not found!");
+            return;
+        }
+
         System.out.println("Please input how much € you want to deposit");
         double money = scanner.nextDouble();
         scanner.nextLine();
-        bank.deposit(money);
+        while(money<0){
+            System.out.println("Please input a positive amount");
+            scanner.nextLine();
+        }
+
+        account.setAmount(account.getAmount()+money);
+
+        bank.deposit(account, money);
+
+        System.out.printf("\nDeposit of %s€ on ID %s done", money, id);
 
     }
     private static void withdrawAction() throws SQLException{
-        System.out.println("Please input how much € you want to withdraw");
-        double money = scanner.nextDouble();
+        System.out.println("On which customer's account ID do you want to withdraw ? ");
+        int id = scanner.nextInt();
         scanner.nextLine();
-        bank.withdraw(money);
+
+        Account account = bank.getAccount(id);
+        if (account == null){
+            System.out.println("Account ID not found!");
+            return;
+        }
+
+        if (account.getAmount() == 0){
+            System.out.println("You cannot withdraw from an empty account !");
+            return;
+        }
+
+        double money = 0;
+        System.out.println("Please input how much € you want to withdraw");
+        boolean is_positive = false;
+        while (!is_positive){
+            money = scanner.nextDouble();
+            scanner.nextLine();
+            if (money<0){
+                System.out.println("Please input a positive value");
+            }else if(account.getAmount() - money < 0){
+                System.out.println("You cannot withdraw more than what you have in your account!");
+                System.out.printf("\nPlease input a value equal or lower than your amount (%s €) in this account\n",account.getAmount());
+            }else if(money>0 && account.getAmount()-money>0 || money ==0){
+                is_positive = true;
+            }
+
+
+        }
+        bank.withdraw(account, money);
+        System.out.printf("\nWithdrawal of %s€ on ID %s done", money, id);
     }
 
     private static void displayAction() throws SQLException{
-        /*String request = "SELECT * FROM etudiant";
-        Connection connection;
-        PreparedStatement statement = connection.prepareStatement(request);
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()){
-            System.out.print("id: "+ resultSet.getInt("id"));
-            System.out.print("] last name: " + resultSet.getString("last_name"));
-            System.out.print(" | first name: " + resultSet.getString("first_name"));
-            System.out.print(" | phone number " + resultSet.getString("phone"));
-            System.out.println();
-        } */
+        System.out.println("Which account ID do you want its informations displayed? ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+        Account account = bank.getAccount(id);
+        Customer customer = bank.getCustomer(account.getCustomer_id());
+        System.out.println(account);
+        System.out.println(customer);
+
+        List<Operation> operations =  bank.getOperationsByAccId(id); // On peut utiliser la technique de cette methode pour display tout les comptes en utilisant l'objet Account à la place
+        for (Operation operation : operations){
+            System.out.println(operation);
+        };
+
+
     }
 
 }

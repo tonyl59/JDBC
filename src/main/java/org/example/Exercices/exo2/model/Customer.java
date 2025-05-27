@@ -22,6 +22,18 @@ public class Customer {
         this.phone = phone;
     }
 
+    // Methods
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
+    }
+
     // Setters & Getters
 
     public int getId() {
@@ -56,15 +68,5 @@ public class Customer {
         this.firstName = firstName;
     }
 
-    // Methods
 
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", lastName='" + lastName + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", phone='" + phone + '\'' +
-                '}';
-    }
 }

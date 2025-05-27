@@ -6,19 +6,33 @@ public class Operation {
     private int id;
     private double amount;
     private String status;
+    private int account_id;
 
 
     // Constructor
 
-    public Operation(int id, double amount, String status) {
+    public Operation(int id, double amount, String status, int account_id) {
         this.id = id;
         this.amount = amount;
         this.status = status;
     }
 
-    public Operation(int customer_id, String status) {
-        this.amount = customer_id;
+    public Operation(String status, int account_id) {
+        this.amount = 0;
         this.status = status;
+        this.account_id = account_id;
+    }
+
+    // Methods
+
+    @Override
+    public String toString() {
+        return "Operation{" +
+                "id=" + id +
+                ", amount=" + amount +
+                ", status='" + status + '\'' +
+                ", account_id=" + account_id +
+                '}';
     }
 
 
